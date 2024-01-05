@@ -4,9 +4,11 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 
 const app = express();
-app.use(cors({ origin: "http://localhost:3001"}));
+const isDev = app.settings.env === "development";
+const URL = isDev ? "http://localhost:3001" : "https://nextjs-doodledraft.vercel.app";
+app.use(cors({ origin: URL}));
 const httpServer = createServer(app);
-const io = new Server(httpServer, { cors: "http://localhost:3001" });
+const io = new Server(httpServer, { cors: URL });
 
 io.on("connection", (socket) => {
   console.log("Server Connected");
